@@ -67,7 +67,13 @@
               "buildTarget": "ng-arch:build:production"
             },
             "development": {
-              "buildTarget": "ng-arch:build:development"
+              "buildTarget": "ng-arch:build:development",
+              "hmr": true,
+              "host": "0.0.0.0",
+              "allowedHosts": [
+                "localhost",
+                "127.0.0.1"
+              ]
             }
           },
           "defaultConfiguration": "development"
