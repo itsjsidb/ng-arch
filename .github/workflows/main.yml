@@ -1,4 +1,4 @@
-name: CI/CD – Secure Angular Production Application with Docker
+name: CI/CD - Secure Angular Production Application with Docker
 
 on:
   push:
@@ -15,7 +15,8 @@ permissions:
 jobs:
   build-test-push:
     name: Build, Scan, and Push
-    runs-on: ubuntu-latest
+    # Use specific version for stability in production
+    runs-on: ubuntu-24.04
 
     steps:
       # 2. CHECKOUT SOURCE: Using v4 for better performance/security
