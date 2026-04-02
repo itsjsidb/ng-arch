@@ -1,0 +1,90 @@
+name: CI/CD – Secure Angular Production Application with Docker
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+# 1. LIMIT PERMISSIONS: Follows Principle of Least Privilege
+permissions:
+  contents: read # To checkout the code
+  security-events: write # To upload Trivy scan results to GitHub Security tab
+
+jobs:
+  build-test-push:
+    name: Build, Scan, and Push
+    runs-on: ubuntu-latest
+
+    steps:
+      # 2. CHECKOUT SOURCE: Using v4 for better performance/security
+      - name: Checkout source code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      # 3. DOCKER SETUP: Buildx is required for advanced caching (gha) and multi-arch builds
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 4. METADATA: Automatically generates OCI-compliant tags and labels
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKERHUB_PROJECT_NAME }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,format=short
+            type=ref,event=pr
+
+      # 5. TEST STAGE: Build the dev image and run Jasmine tests
+      - name: Build Dev Image for Testing
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile.dev
+          load: true # Loads image into local Docker daemon for testing
+          cache-from: type=gha # Uses high-speed GitHub Actions Cache API
+          cache-to: type=gha,mode=max
+
+      - name: Run Angular Tests
+        run: |
+          docker run --rm \
+            -e CI=true \
+            ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKERHUB_PROJECT_NAME }}:pr-${{ github.event.pull_request.number || 'latest' }} \
+            sh -c "npm ci && npm run test -- --watch=false --browsers=ChromeHeadless"
+        timeout-minutes: 10
+
+      # 6. SECURITY SCAN: Check the image for vulnerabilities before pushing
+      - name: Run Trivy Vulnerability Scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: '${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKERHUB_PROJECT_NAME }}:latest'
+          format: 'table'
+          exit-code: '1' # Fails the pipeline if "CRITICAL" vulnerabilities are found
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'
+
+      # 7. AUTHENTICATION: Use a Personal Access Token (PAT)
+      - name: Log in to Docker Hub
+        if: github.event_name != 'pull_request' # Only log in if we are actually pushing
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 8. PRODUCTION BUILD & PUSH: Multi-architecture support (AMD64 & ARM64)
+      - name: Build and Push Production Image
+        if: github.event_name != 'pull_request' # Only push on 'main' branch merges/pushes
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          platforms: linux/amd64,linux/arm64 # Supports both standard servers and ARM (like Oracle Ampere)
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
