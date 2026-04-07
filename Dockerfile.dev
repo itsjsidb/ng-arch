@@ -15,7 +15,7 @@ ENV NODE_ENV=development
 WORKDIR /app
 
 # Copy only the dependency files first to optimize Docker caching
-COPY package.json package-lock.json* ./
+COPY package.json package-lock.json* .npmrc ./
 
 # Install dependencies using npm with caching to speed up subsequent builds
 RUN --mount=type=cache,target=/root/.npm npm install
