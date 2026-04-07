@@ -10,7 +10,7 @@
     "serve:ssr:ng-arch": "node dist/ng-arch/server/server.mjs",
     "format": "npx prettier --write . --ignore-path .prettierignore --config .prettierrc",
     "lint": "ng lint",
-    "setup": "npm install -g @angular/cli@21.2.5 npkill git-removed-branches && npm install"
+    "setup": "npm install -g @angular/cli@21.2.5 npkill git-removed-branches && npm install && ng analytics disable --global && ng analytics disable"
   },
   "private": true,
   "packageManager": "npm@11.11.1",
