@@ -9,7 +9,8 @@
     "test": "ng test",
     "serve:ssr:ng-arch": "node dist/ng-arch/server/server.mjs",
     "format": "npx prettier --write . --ignore-path .prettierignore --config .prettierrc",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "setup": "npm install -g @angular/cli@21.2.5 npkill git-removed-branches && npm install && npm run format"
   },
   "private": true,
   "packageManager": "npm@11.11.1",
