@@ -16,9 +16,11 @@ Builds the production image from `Dockerfile` and serves the compiled app using 
 
 - Port: `8080:8080`
 - Recommended command:
+
 ```bash
 docker compose -f compose.yaml up --build ng-arch-prod
 ```
+
 - Open: `http://localhost:8080`
 
 ### ng-arch-dev
@@ -27,9 +29,11 @@ Starts a live development container using `Dockerfile.dev`.
 
 - Port: `4200:4200`
 - Recommended command:
+
 ```bash
 docker compose -f compose.yaml up --build ng-arch-dev
 ```
+
 - The container runs `npm start -- --host=0.0.0.0` so the dev server is accessible from the host.
 
 ### angular-test
@@ -37,6 +41,7 @@ docker compose -f compose.yaml up --build ng-arch-dev
 Runs the Angular test command inside the development container.
 
 - Recommended command:
+
 ```bash
 docker compose -f compose.yaml run --rm angular-test
 ```

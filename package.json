@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:ng-arch": "node dist/ng-arch/server/server.mjs"
+    "serve:ssr:ng-arch": "node dist/ng-arch/server/server.mjs",
+    "format": "npx prettier --write . --ignore-path .prettierignore --config .prettierrc"
   },
   "private": true,
   "packageManager": "npm@11.11.1",

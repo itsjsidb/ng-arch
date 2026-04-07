@@ -1,6 +1,11 @@
 {
+  "useTabs": false,
+  "tabWidth": 2,
+  "bracketSpacing": false,
   "printWidth": 100,
   "singleQuote": true,
+  "jsxSingleQuote": true,
+  "trailingComma": "none",
   "overrides": [
     {
       "files": "*.html",
