@@ -1,6 +1,63 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  "schematics": {
+    "@schematics/angular:component": {
+      "name": "component",
+      "type": "component",
+      "changeDetection": "OnPush"
+    },
+    "@schematics/angular:service": {
+      "addTypeToClassName": true,
+      "name": "service",
+      "type": "service",
+      "path": "/src/app/shared/services"
+    },
+    "@schematics/angular:guard": {
+      "name": "guard",
+      "typeSeparator": ".",
+      "path": "/src/app/shared/guards",
+      "functional": true
+    },
+    "@schematics/angular:directive": {
+      "name": "directive",
+      "type": "directive",
+      "addTypeToClassName": true,
+      "path": "/src/app/shared/directives"
+    },
+    "@schematics/angular:pipe": {
+      "name": "pipe",
+      "typeSeparator": ".",
+      "path": "/src/app/shared/pipes"
+    },
+    "@schematics/angular:interceptor": {
+      "functional": true,
+      "name": "interceptor",
+      "typeSeparator": ".",
+      "path": "/src/app/shared/interceptors"
+    },
+    "@schematics/angular:resolver": {
+      "name": "resolver",
+      "typeSeparator": ".",
+      "functional": true,
+      "flat": true
+    },
+    "@schematics/angular:enum": {
+      "name": "enum",
+      "type": "enum"
+    },
+    "@schematics/angular:interface": {
+      "name": "dto",
+      "type": "dto"
+    },
+    "@schematics/angular:class": {
+      "name": "model",
+      "type": "model"
+    },
+    "@schematics/angular:web-worker": {
+      "name": "worker"
+    }
+  },
   "cli": {
     "packageManager": "npm",
     "schematicCollections": ["angular-eslint"],
