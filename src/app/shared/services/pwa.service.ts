@@ -113,7 +113,14 @@ export class PwaService {
    * Activates the new version and reloads the app.
    */
   private activateUpdate(): void {
-    document.location.reload();
+    this.reloadApp();
+  }
+
+  /**
+   * Reloads the application (extracted for testing).
+   */
+  reloadApp(): void {
+    window.location.reload();
   }
 
   /**
