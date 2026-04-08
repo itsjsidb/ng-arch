@@ -11,12 +11,12 @@
       "addTypeToClassName": true,
       "name": "service",
       "type": "service",
-      "path": "/src/app/shared/services"
+      "path": "/src/app/core/services"
     },
     "@schematics/angular:guard": {
       "name": "guard",
       "typeSeparator": ".",
-      "path": "/src/app/shared/guards",
+      "path": "/src/app/core/guards",
       "functional": true
     },
     "@schematics/angular:directive": {
@@ -34,7 +34,7 @@
       "functional": true,
       "name": "interceptor",
       "typeSeparator": ".",
-      "path": "/src/app/shared/interceptors"
+      "path": "/src/app/core/interceptors"
     },
     "@schematics/angular:resolver": {
       "name": "resolver",
